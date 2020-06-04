@@ -6,7 +6,7 @@ public class AudioManager : MonoBehaviour
 {
     //public static float inputDelay;
 
-    public float bpm = 120;
+  
 
     [Header("Sounds")]
     [SerializeField]
@@ -17,46 +17,67 @@ public class AudioManager : MonoBehaviour
     private AudioSource bassC;
     [SerializeField]
     private AudioSource guitarC;
-    public float beatMultiplier;
+    [SerializeField]
+    private AudioSource guitarLoop;
+    public List <int> musicScale;
 
+    public PatternGenerator pattern;
 
-
-    private float musicTimer;
-    private float drumInterval;
     
 
 
     // Start is called before the first frame update
     void Start()
     {
-        musicTimer = 0;
-        drumInterval = 60 / bpm;
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        musicTimer += Time.deltaTime;
-        PlaySound(drum, beatMultiplier);
-        //PlaySound(kick, beatMultiplier);
 
     }
 
-    void PlaySound(AudioSource source, float interval)
+
+    public void PlaySound(int tickNr)
     {
-        drumInterval += Time.deltaTime;
-        if(drumInterval >= 60 / (bpm * interval))
+        //PlayNote(drum, 0);
+        if (pattern.musicStructure[tickNr].Drum == 1)
         {
-            source.Play();
-            Debug.Log("beat " + drumInterval);
-            drumInterval = 0f;
+            PlayNote(drum, 0);
         }
+        if (pattern.musicStructure[tickNr].Kick == 1)
+        {
+            PlayNote(kick, 0);
+        }
+        //Debug.Log(pattern.musicStructure[tickNr].Guitar);
+        
+        PlayNote(guitarLoop, pattern.musicStructure[tickNr].Guitar);
+            //Debug.Log("play");
+        
+           
+        PlayNote(bassC, pattern.musicStructure[tickNr].Bass);
+
     }
 
-    void PlayNote(AudioSource source, int startOffset, int nrSkips, float currTimer)
+    public void PlayNote(AudioSource source, int pitch)
     {
+
+        if (musicScale.Contains(pitch))
+        {
+            source.pitch = Mathf.Pow(2, (pitch) / 12.0f);
+            source.Play();
+        }
+        else source.Stop();
+        /*  pitch = 0;  // C
+            pitch = 2;  // D
+            pitch = 4;  // E
+            pitch = 5;  // F
+            pitch = 7;  // G
+            pitch = 9;  // A
+            pitch = 11; // B
+            pitch = 12; // C
+            pitch = 14; // D
+        */
+
         
+            
     }
+
 
     void UpdateTimers()
     {

@@ -9,9 +9,6 @@ using System.Linq;
 public class TerrainGeneration : MonoBehaviour
 {
     [Header("Track Shape Settings")]
-    public bool generateSpheres;
-    public bool randomize;
-
     public float roadWidth = 1;
     public float railingWidth = 1f;
     public float railingHeight = 1f;
@@ -20,27 +17,25 @@ public class TerrainGeneration : MonoBehaviour
 
     [Header ("Visual Settings")]
     public float tiling = 1;
-    
+    public bool generateSpheres;
     public float updateInteral;
 
 
     public GameObject groundPoint;
-    public Path path;
+    private Path path;
 
     private List<GameObject> groundPoints = new List<GameObject>();
-    [HideInInspector]
-    public Vector3[] pointsOnCurve;
+
 
     private float pathLength;
 
-    private float timePassed;
 
     
 
     // Start is called before the first frame update
     void Awake()
     {
-        
+        path = GetComponent<Path>();
         //GeneratePointsInCurve();
         if(generateSpheres) CreateSpheres();
         //else UpdateRoad();

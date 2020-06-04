@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class Note : MonoBehaviour
 {
-    public float bpm = 120;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -16,10 +14,5 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
-    }
-
-    public void Finish()
-    {
-
     }
 }

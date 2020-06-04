@@ -8,7 +8,7 @@ public struct AnchorPoint
     public Vector3 Position;
     public Quaternion Rotation;
     public Vector3 Scale;
-
+    public bool Straight;
     
 }
 
