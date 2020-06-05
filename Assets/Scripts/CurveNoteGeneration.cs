@@ -10,6 +10,7 @@ public class CurveNoteGeneration : MonoBehaviour
     [Header("Track Shape Settings")]
     public float roadWidth = 1;
     public float roadHeight = 0.1f;
+    public float direction;
 
     public Material standardMaterial;
     public Material glowMaterial;
@@ -70,8 +71,8 @@ public class CurveNoteGeneration : MonoBehaviour
             float v = i / (float)(points.Length-1); 
             uvs[vertIndex] = new Vector2(0, v);
             uvs[vertIndex + 1] = new Vector2(1, v);
-            //Debug.Log(transforms[i].Straight);
-            if (i < (points.Length - 1) && !transforms[i].Straight)
+            //Debug.Log(transforms[i].Direction);
+            if (i < (points.Length - 1) && transforms[i].Direction == direction)
             {
                 tris[triIndex] = vertIndex;
                 tris[triIndex + 1] = (vertIndex + 2);

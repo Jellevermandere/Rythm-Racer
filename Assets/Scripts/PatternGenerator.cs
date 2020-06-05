@@ -10,9 +10,10 @@ using UnityEngine;
 public class PatternGenerator : MonoBehaviour
 {
     public AudioManager audio;
+    private GameManager gm;
     private Path path;
     private TerrainGeneration terrainGeneration;
-    public CurveNoteGeneration curveNoteGeneration;
+    public CurveNoteGeneration[] curveNoteGeneration;
     [Header("Path generation settings")]
     public bool endlessMode;
     public int startOffset;
@@ -59,19 +60,21 @@ public class PatternGenerator : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        gm = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameManager>();
         CurrentBpm = bpm;
         path = GetComponent<Path>();
         terrainGeneration = GetComponent<TerrainGeneration>();
         musicStructure = new NoteIndex[levelDuration + startOffset*2];
         ResetNotes(musicStructure);
+        bassSeed = Random.Range(0, 100f);
 
-        //CreateKickSequence();
         CreateDrumSequence();
         CreateKickSequence();
+        CreateBassSequence();
         CreateRoadPattern();
-
+        //path.GenerateStartPoints(stepDistance,2);
     }
 
     // Update is called once per frame
@@ -104,8 +107,10 @@ public class PatternGenerator : MonoBehaviour
         {
             
             CurrentBpm = Mathf.Lerp(0, bpm, (musicStructure.Length*playerSpeed - playerPointNr) / (musicStructure.Length * startOffset * playerSpeed));
+            gm.Finish();
             
         }
+        
        
     }
     void ResetNotes(NoteIndex[] notes)
@@ -131,6 +136,7 @@ public class PatternGenerator : MonoBehaviour
         {
             musicStructure[i + startOffset].Drum = musicPatternSegments[i % 16].Drum;
             musicStructure[i + startOffset].Kick = musicPatternSegments[i % 16].Kick;
+            musicStructure[i + startOffset].Bass = musicPatternSegments[i % 16].Bass;
             musicStructure[i + startOffset].hasNote = musicPatternSegments[i % 16].hasNote;
 
         }
@@ -188,7 +194,9 @@ public class PatternGenerator : MonoBehaviour
             {
                
                 musicStructure[nrOfNotesPlaced + i + startOffset].Guitar = typeNote;
-             
+                
+
+
             }
             path.AddSegment(stepDistance, noteDuration * playerSpeed, typeNote, roadSideOffset);
             nrOfNotesPlaced += noteDuration;
@@ -196,9 +204,13 @@ public class PatternGenerator : MonoBehaviour
 
         }
         
-        path.AddStraight(stepDistance, startOffset * playerSpeed);
+        path.AddStraight(stepDistance, startOffset * playerSpeed, true);
         terrainGeneration.UpdateRoad(stepDistance);
-        curveNoteGeneration.UpdateRoad(stepDistance);
+        foreach (CurveNoteGeneration curve in curveNoteGeneration)
+        {
+            curve.UpdateRoad(stepDistance);
+        }
+        
         Debug.Log(path.points.Count + " " + nrOfNotesPlaced);
 
     }
@@ -328,12 +340,12 @@ public class PatternGenerator : MonoBehaviour
     {
         if (Input.GetKeyDown("space"))
         {
-            path.AddStraight(stepDistance,10);
+            path.AddStraight(stepDistance,10, true);
             terrainGeneration.UpdateRoad(stepDistance);
         }
         if (Input.GetKeyDown("right"))
         {
-            path.AddCorner(45, 20, 0, stepDistance);
+            path.AddCorner(90, 20, 0, stepDistance);
             terrainGeneration.UpdateRoad(stepDistance);
         }
         if (Input.GetKeyDown("left"))

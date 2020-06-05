@@ -108,10 +108,10 @@ GameObject:
   - component: {fileID: 5544960541484594723}
   - component: {fileID: 5544960541484594720}
   - component: {fileID: 5544960541484594721}
+  - component: {fileID: 5544960541484594748}
   - component: {fileID: 5544960541484594726}
   - component: {fileID: 5544960541484594722}
   - component: {fileID: 5544960541484594749}
-  - component: {fileID: 5544960541484594748}
   m_Layer: 0
   m_Name: TrackManager
   m_TagString: TrackManager
@@ -181,6 +181,21 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!114 &5544960541484594748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5544960541484594727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99eb021d3f7194c419f7eac4d3760a77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  note: {fileID: 875813371159077778, guid: d7072949b9b5e428db713f3fe3963fc3, type: 3}
+  startLine: {fileID: 2112864046969297074, guid: 58898fb9b49a84d97894a65d12cb133f,
+    type: 3}
 --- !u!114 &5544960541484594726
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -251,18 +266,3 @@ MonoBehaviour:
   minNoteDuration: 12
   maxNoteDuration: 20
   CurrentBpm: 0
---- !u!114 &5544960541484594748
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5544960541484594727}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 99eb021d3f7194c419f7eac4d3760a77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  note: {fileID: 875813371159077778, guid: d7072949b9b5e428db713f3fe3963fc3, type: 3}
-  startLine: {fileID: 2112864046969297074, guid: 58898fb9b49a84d97894a65d12cb133f,
-    type: 3}

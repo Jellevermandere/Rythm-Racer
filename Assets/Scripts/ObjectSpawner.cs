@@ -8,6 +8,10 @@ public class ObjectSpawner : MonoBehaviour
 {
     public GameObject note;
     public GameObject startLine;
+    public GameObject backGroundNote;
+
+    public float BackgroundDistance;
+    public bool spawnBackground;
     
 
     private Path path;
@@ -21,6 +25,11 @@ public class ObjectSpawner : MonoBehaviour
 
         spawnNote();
         SetStartLine();
+        if (spawnBackground)
+        {
+            SpawnBackGroundNote();
+
+        }
     }
 
     // Update is called once per frame
@@ -45,5 +54,19 @@ public class ObjectSpawner : MonoBehaviour
     {
         Instantiate(startLine, path.points[pattern.startOffset*pattern.playerSpeed].Position, path.points[pattern.startOffset * pattern.playerSpeed].Rotation);
         Instantiate(startLine, path.points[path.points.Count-1- pattern.startOffset * pattern.playerSpeed].Position, path.points[path.points.Count - 1 - pattern.startOffset * pattern.playerSpeed].Rotation);
+    }
+
+    void SpawnBackGroundNote()
+    {
+        for (int i = 0; i < path.points.Count / (float)pattern.playerSpeed; i++)
+        {
+            if (pattern.musicStructure[i].hasNote == true)
+            {
+                Instantiate(backGroundNote, path.points[i * pattern.playerSpeed].Position +
+                    path.points[i * pattern.playerSpeed + 1].Rotation * (Vector3.right * (Random.Range(0f,1f)>0.5f? 1:-1) + Vector3.up * Random.Range(0f,1f)) * BackgroundDistance,
+                    path.points[i * pattern.playerSpeed + 1].Rotation);
+
+            }
+        }
     }
 }

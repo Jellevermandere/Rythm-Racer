@@ -18,7 +18,7 @@ public class Path : MonoBehaviour
     {
         points.Add(new AnchorPoint() { Position = Vector3.zero,Rotation = Quaternion.identity, Scale = Vector3.one });
         points.Add(new AnchorPoint() { Position = Vector3.forward * step, Rotation = Quaternion.identity, Scale = Vector3.one });
-        AddStraight(step,amount - 2);
+        AddStraight(step,amount - 2, true);
         
     }
 
@@ -26,7 +26,7 @@ public class Path : MonoBehaviour
     {
         if(direction == -1)
         {
-            AddStraight(step, amount);
+            AddStraight(step, amount, true);
         }
         else if(direction == 2)
         {
@@ -47,7 +47,7 @@ public class Path : MonoBehaviour
     }
 
     // adds a piece of track in line with the current last point
-    public void AddStraight(float step, int amount)
+    public void AddStraight(float step, int amount, bool straight)
     {
         for (int i = 0; i < amount; i++)
         {
@@ -55,7 +55,7 @@ public class Path : MonoBehaviour
             Vector3 newPos = points[points.Count - 1].Position + points[points.Count - 1].Rotation * Vector3.forward * step;
             Quaternion newRot = points[points.Count - 1].Rotation;
 
-            points.Add(new AnchorPoint() { Position = newPos, Rotation = newRot, Scale = Vector3.one, Straight = true });
+            points.Add(new AnchorPoint() { Position = newPos, Rotation = newRot, Scale = Vector3.one, Straight = straight, Direction = straight? 0:-2 });
         }
     }
 
@@ -81,6 +81,7 @@ public class Path : MonoBehaviour
             newPoint.Rotation *= Quaternion.AngleAxis(currAngle, Vector3.up);
             newPoint.Position += newPoint.Rotation * Vector3.left * radius * direction;
             newPoint.Straight = false;
+            newPoint.Direction = direction;
             //newPoint.Rotation *= Quaternion.AngleAxis(currBank, Vector3.forward);
             points.Add(newPoint);
             //Debug.Log(newPoint.Rotation.eulerAngles.y);
@@ -112,6 +113,7 @@ public class Path : MonoBehaviour
             newPoint.Rotation *= Quaternion.AngleAxis(currAngle, Vector3.left);
             newPoint.Position += newPoint.Rotation * Vector3.down * radius + newPoint.Rotation * Vector3.left * currOffset;
             newPoint.Straight = false;
+            newPoint.Direction = 2;
             points.Add(newPoint);
             //Debug.Log(newPoint.Rotation.eulerAngles.x);
         }
@@ -138,6 +140,7 @@ public class Path : MonoBehaviour
             newPoint.Rotation *= Quaternion.AngleAxis(currAngle, Vector3.right);
             newPoint.Position += newPoint.Rotation * Vector3.up * radius;
             newPoint.Straight = false;
+            newPoint.Direction = -2;
             points.Add(newPoint);
             //Debug.Log(newPoint.Rotation.eulerAngles.x);
         }
@@ -145,7 +148,7 @@ public class Path : MonoBehaviour
 
         for (int i = 0; i < amount - 2 * nrOfSteps; i++)
         {
-            AddStraight(step, 1);
+            AddStraight(step, 1, false);
         }
 
         // add an upward turn
@@ -163,6 +166,7 @@ public class Path : MonoBehaviour
             newPoint.Rotation *= Quaternion.AngleAxis(currAngle, Vector3.left);
             newPoint.Position += newPoint.Rotation * Vector3.down * radius;
             newPoint.Straight = false;
+            newPoint.Direction = -2;
             points.Add(newPoint);
             //Debug.Log(newPoint.Rotation.eulerAngles.x);
         }
@@ -254,7 +258,7 @@ public class Path : MonoBehaviour
 
         for (int i = 0; i < lenght; i++)
         {
-            AddStraight(step,1);
+            AddStraight(step,1, true);
         }
 
         // add an upward turn
